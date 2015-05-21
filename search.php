@@ -1,0 +1,82 @@
+<?php get_header(); ?>
+
+<div id="content" class="clearfix row-fluid">
+  <div id="main" class="span8 clearfix" role="main">
+    <header>
+      <hgroup>
+        <h1 class="page-title clean-bottom" itemprop="headline"> Search Results For: </h1>
+        <h2 class="subheading"><?php echo esc_attr(get_search_query()); ?></h2>
+      </hgroup>
+    </header>
+    <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+    <article id="post-<?php the_ID(); ?>" <?php post_class('clearfix'); ?> role="article">
+      <header>
+        <h3><a href="<?php the_permalink() ?>" rel="bookmark" title="<?php the_title_attribute(); ?>">
+          <?php the_title(); ?>
+          </a></h3>
+        <p class="meta">
+          <?php _e("Posted", "eli-theme"); ?>
+          <time datetime="<?php echo the_time('Y-m-j'); ?>" pubdate>
+            <?php the_date(); ?>
+          </time>
+          <?php _e("by", "eli-theme"); ?>
+          <?php the_author_posts_link(); ?>
+          <span class="amp">&</span>
+          <?php _e("filed under", "eli-theme"); ?>
+          <?php the_category(', '); ?>
+          .</p>
+      </header>
+      <!-- end article header -->
+      
+      <section class="post_content">
+        <?php the_excerpt('<span class="read-more">' . __("Read more on","eli-theme") . ' "'.the_title('', '', false).'" &raquo;</span>'); ?>
+      </section>
+      <!-- end article section -->
+      
+      <footer> </footer>
+      <!-- end article footer --> 
+      
+    </article>
+    <!-- end article -->
+    
+    <?php endwhile; ?>
+    <?php if (function_exists('page_navi')) { // if expirimental feature is active ?>
+    <?php page_navi(); // use the page navi function ?>
+    <?php } else { // if it is disabled, display regular wp prev & next links ?>
+    <nav class="wp-prev-next">
+      <ul class="clearfix">
+        <li class="prev-link">
+          <?php next_posts_link(_e('&laquo; Older Entries', "eli-theme")) ?>
+        </li>
+        <li class="next-link">
+          <?php previous_posts_link(_e('Newer Entries &raquo;', "eli-theme")) ?>
+        </li>
+      </ul>
+    </nav>
+    <?php } ?>
+    <?php else : ?>
+    
+    <!-- this area shows up if there are no results -->
+    
+    <article id="post-not-found" class="alert alert-danger">
+      <header>
+        <h4>
+          <?php _e("Not Found", "eli-theme"); ?>
+        </h4>
+      </header>
+      <section class="post_content">
+        <p>
+          <?php _e("Sorry, but the requested resource was not found on this site. Please try your search query again.", "eli-theme"); ?>
+        </p>
+      </section>
+      <footer> </footer>
+    </article>
+    <?php endif; ?>
+  </div>
+  <!-- end #main -->
+  
+  <?php get_sidebar(); // sidebar 1 ?>
+</div>
+<!-- end #content -->
+
+<?php get_footer(); ?>
